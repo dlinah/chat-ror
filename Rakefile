@@ -4,3 +4,10 @@
 require_relative 'config/application'
 
 Rails.application.load_tasks
+require "resque"
+require 'resque/tasks'
+task 'resque:setup' => :environment
+Resque.redis = ENV['REDIS_URL']
+
+
+

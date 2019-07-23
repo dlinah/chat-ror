@@ -1,24 +1,13 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+this is a demo chat app running multiple service
 
-Things you may want to cover:
+### start
+* to start app run `docker-compose up`
+* ^ this might take a while 
+* make sure to wait a couple of miniutes after the docker is running for db intialization to be done
 
-* Ruby version
 
-* System dependencies
+*docker-compose `version 1.23.2, build 1110ad01`*
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+*Docker `version 18.09.0, build 4d60db4`*

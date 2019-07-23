@@ -1,0 +1,5 @@
+development: <%= ENV['REDIS_URL'] %>
+test: <%= ENV['REDIS_URL'] %>
+staging: redis1.se.github.com:6379
+fi: <%= ENV['REDIS_URL'] %>
+production: <%= ENV['REDIS_URL'] %>

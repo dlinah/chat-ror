@@ -4,7 +4,7 @@ use ror_chatap_production
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
- SET NAMES utf8 ;
+ SET NAMES utf8mb4 ;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -23,7 +23,7 @@ CREATE TABLE `apps` (
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_apps_on_token` (`token`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `ar_internal_metadata`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -51,7 +51,7 @@ CREATE TABLE `chats` (
   KEY `index_chats_on_app_id` (`app_id`),
   KEY `index_chats_on_number` (`number`),
   CONSTRAINT `fk_rails_de65013ee8` FOREIGN KEY (`app_id`) REFERENCES `apps` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `messages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -59,7 +59,6 @@ DROP TABLE IF EXISTS `messages`;
 CREATE TABLE `messages` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `number` int(11) DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
   `body` text,
   `chat_id` bigint(20) DEFAULT NULL,
   `created_at` datetime NOT NULL,
@@ -68,7 +67,7 @@ CREATE TABLE `messages` (
   KEY `index_messages_on_chat_id` (`chat_id`),
   KEY `index_messages_on_number` (`number`),
   CONSTRAINT `fk_rails_0f670de7ba` FOREIGN KEY (`chat_id`) REFERENCES `chats` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `schema_migrations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -92,3 +91,5 @@ INSERT INTO `schema_migrations` (version) VALUES
 ('20190723105531'),
 ('20190723105607'),
 ('20190723105632');
+
+

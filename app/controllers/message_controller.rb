@@ -1,6 +1,10 @@
+require('ESrequest')
+require 'json'
+require "resque"
+
 class MessageController < ApplicationController
-  before_action :set_app, only: [:create, :show, :update]
-  before_action :set_chat, only: [:create, :update, :show]
+  before_action :set_app, only: [:create, :show, :update, :search]
+  before_action :set_chat, only: [:create, :update, :show, :search]
   before_action :set_message, only: [:update, :show]
 
   def show
@@ -8,26 +12,42 @@ class MessageController < ApplicationController
   end
 
   def update
-    @message.lock!
-    if @message.update(message_params)
-      render  status: :ok
-    else
-      render json: @message.errors, status: :unprocessable_entity
-    end
+    UpdateMsgJob.perform_later @message[0], message_params
+    render  status: :ok
   end
 
   def create
-    @chat.lock!
-    count=(@chat.messages_count || 0) + 1 
-    @message = Message.new(message_params)
-    @message.chat=@chat
-    @message.number=count
-    if @message.save
-      @chat.update(messages_count: count)
-      render json: @message.number, status: :created
-    else
-      render json: @message.errors, status: :unprocessable_entity
-    end
+    c = Rails.cache.read(@chat.id.to_s+"msgs_count")
+    count=(c || @chat.messages_count || 0) + 1 
+    CreateMsgJob.perform_later @chat, count, message_params
+    Rails.cache.write(@chat.id.to_s+"msgs_count", count)
+    render json: count, status: :ok
+  end
+
+  def search
+    query = {
+      query: {
+        bool: {
+          must: [
+            {
+              term: {
+                chat_id: @chat.id
+              }
+            },
+            {
+              query_string: {
+            query: "*#{params[:text]}*",
+            fields: [
+              "body"
+            ]
+          }
+            }
+          ]
+        }
+      }
+    }
+    res = ESrequest :search ,query.to_json
+    render json: res, status: :success
   end
   private
     # Use callbacks to share app setup or constraints between actions.
