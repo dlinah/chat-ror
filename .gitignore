@@ -17,6 +17,8 @@
 /storage/*
 !/storage/.keep
 
+/data/*
+!/data/.keep
 .byebug_history
 
 # Ignore master key for decrypting credentials and more.
